@@ -2,6 +2,8 @@ from typing import List
 import psycopg2
 from external.dataBase.database_manager import DatabaseManager
 from models.book import Book
+from models.client import Client
+
 
 
 class PsycopgDBManagerImpl(DatabaseManager):
@@ -24,7 +26,24 @@ class PsycopgDBManagerImpl(DatabaseManager):
             cur.close
             return results
 
+        def addClient(self, client: Client) -> Client:
+            cur = self.connection.cursor()
+            cur.execute("""INSERT INTO client
+                        (id,name) 
+                        VALUES (%(id)s, %(name)s)""",
+                        {'id': client.id, 'name': client.name})
+            self.connection.commit()
+            cur.close()
+            return client
         
+        def listAllClients(self) -> list[Client]:
+            cur = self.connection.cursor()
+            cur.execute("SELECT * FROM client")
+            result = cur.fetchall()
+            return result
+
+
+
         def upsertBook(self, book:Book)->Book:
             cur = self.connection.cursor()
             cur.execute("""INSERT INTO books(
