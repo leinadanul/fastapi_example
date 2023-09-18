@@ -14,3 +14,7 @@ class ClientService():
     
     def list_clients(self):
         return self.databaseManager.listAllClients()
+    
+    def get_client(self, client_id: int):
+        return self.databaseManager.getClient()
+    

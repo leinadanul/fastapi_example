@@ -87,3 +87,14 @@ class PsycopgDBManagerImpl(DatabaseManager):
             self.connection.commit()
             cur.close()
             return f'The book with {isbn} was be delete'
+        
+        def getClient(self, client_id):
+            cur = self.connection.cursor()
+            cur.execute("SELECT * FROM client WHERE id = %(id)s", {'id': client_id})
+            result = cur.fetchone()
+            cur.close()
+            if result:
+                client_id, client_name = result
+                return Client(id=client_id, name=client_name)
+            return None
+    

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from external.dataBase.implementations.psycopg_impl import PsycopgDBManagerImpl
 from models.book import Book
 from models.client import Client
+from services import client_services
 from services.books_services import BookService
 from services.client_services import ClientService
 
@@ -9,8 +10,8 @@ from services.client_services import ClientService
 app = FastAPI()
 
 dbmanager = PsycopgDBManagerImpl()
-bookService = BookService(dbmanager)
 clientService = ClientService(dbmanager)
+bookService = BookService(dbmanager)
 
 @app.post("/books")
 async def create_book(book: Book):
@@ -40,8 +41,15 @@ async def create_client(client: Client):
 async def list_clients():
         return clientService.list_clients()
 
+@app.post("/clients/{client_id}/rent/{isbn}")
+def rent_book(client_id: int, isbn: str):
+        client = client_services.get_client(client_id)
+
+
 
 # Iniciar el servidor con Uvicorn
 if __name__ == "__main__":
         import uvicorn
         uvicorn.run(app, host="127.0.0.1", port=8000)
+
+        

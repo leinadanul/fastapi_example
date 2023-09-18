@@ -18,3 +18,5 @@ class DatabaseManager (ABC):
         pass
     def listAllClients(self)->List[Client]:
         pass
+    def getClient(self, client_id: int) -> Client:
+        pass
