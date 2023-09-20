@@ -2,11 +2,18 @@ from typing import List
 import psycopg2
 from external.dataBase.database_manager import DatabaseManager
 from models.book import Book
+from decouple import config
 
 
 class PsycopgDBManagerImpl(DatabaseManager):
         def __init__(self): 
-            self.connection = psycopg2.connect("dbname=library user=postgres password=toor port=5432 ")
+            self.connection = psycopg2.connect(
+                dbname=config('DB_NAME'),
+                user=config('DB_USER'),
+                password=config('DB_PASSWORD'),
+                host=config('DB_HOST'),
+                port=config('DB_PORT')
+            )
         
         def __mapResultToBooks(self, results: List[any]):
             books:List(Book)=[]
