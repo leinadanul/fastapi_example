@@ -4,7 +4,6 @@ from models.book import Book
 class BookService():
     def __init__(self,databaseManager: DatabaseManager):
         self.databaseManager= databaseManager
-        self.connection = psycopg2.connect("dbname=library user=postgres password=toor port=5432 ")
 
     def create_book(self, book: Book):
             self.databaseManager.upsertBook(book)
